@@ -1,0 +1,6 @@
+:root { color-scheme: light dark; }
+body { font-family: system-ui, sans-serif; margin: 0; padding: 16px; }
+main { max-width: 860px; margin: 0 auto; }
+h1 { font-size: 1.2rem; }
+#stats { opacity: 0.8; margin-bottom: 8px; }
+#canvas { width: 100%; height: auto; background: #111; display: block; }

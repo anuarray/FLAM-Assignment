@@ -1,0 +1,20 @@
+# Node
+node_modules/
+web/dist/
+
+# Android/Gradle
+**/build/
+.cxx/
+.local/
+.gradle/
+.idea/
+*.iml
+captures/
+.externalNativeBuild/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Others
+.env

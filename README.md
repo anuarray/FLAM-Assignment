@@ -42,8 +42,9 @@ Add your own captures here (place files under a `docs/` folder and update the pa
   `![Android Canny](docs/android-canny.png)`
 
 - Web viewer:
-  
-  `![Web Viewer](docs/web-viewer.png)`
+  ![unnamed](https://github.com/user-attachments/assets/b9bdf40e-4e9e-4e0d-a7aa-bbc27903b947)
+
+ 
 
 ## Setup Instructions
 

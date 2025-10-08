@@ -34,15 +34,15 @@ This repository contains a minimal multi-part project for the assessment:
 Add your own captures here (place files under a `docs/` folder and update the paths):
 
 - Android app (Grayscale):
-  
-  `![Android Grayscale](docs/android-gray.png)`
+  ![unnamed](https://github.com/user-attachments/assets/5fd53a53-9223-418f-a837-075ede00b4a1)
+
 
 - Android app (Canny):
-  
-  `![Android Canny](docs/android-canny.png)`
+  ![unnamed](https://github.com/user-attachments/assets/59d195f5-6ea9-4285-8d29-83a3db6d3e1b)
+
 
 - Web viewer:
-  ![unnamed](https://github.com/user-attachments/assets/b9bdf40e-4e9e-4e0d-a7aa-bbc27903b947)
+![unnamed](https://github.com/user-attachments/assets/5e51fcef-de2e-4939-95ac-9465b69ee808)
 
  
 

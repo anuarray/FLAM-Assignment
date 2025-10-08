@@ -14,27 +14,51 @@ This repository contains a minimal multi-part project for the assessment:
 ./web   
 ```
 
-- `app`: Java/Kotlin Android application code (camera, UI, glue)
+- `app`: Kotlin Android application code (camera, UI, glue)
 - `jni`: C++ code using OpenCV exposed via JNI (Canny/Grayscale)
 - `gl`: OpenGL ES 2.0 renderer and shaders for textured quad rendering
 - `web`: TypeScript viewer (buildable via `tsc`)
 
-## Status
+## Features Implemented
 
-- [ ] Android: Camera → JNI → OpenGL pipeline
-- [ ] JNI C++ OpenCV processing
-- [ ] OpenGL ES renderer
-- [x] Web: TypeScript viewer scaffolding
+- Camera feed via CameraX analyzer (Y plane → RGBA)
+- JNI bridge with native C++ processing
+- OpenCV optional (auto-detected); fallback CPU grayscale/edges if OpenCV is not available
+- OpenGL ES 2.0 textured quad rendering
+- Toggle between Grayscale and Canny
+- FPS text overlay (approximate)
+- Web viewer shows a sample processed frame and simple FPS estimate
 
-## Getting Started
+## Android Setup
 
-### Prerequisites
+Prerequisites:
 
-- Android Studio (Giraffe+), Android SDK and NDK
-- OpenCV for Android SDK (for native + Java bindings as needed)
-- Node.js 18+ and npm for the web viewer
+- Android Studio (Giraffe+)
+- Android SDK and NDK installed (SDK Manager → SDK Tools → NDK, CMake)
 
-### Web Viewer
+Open the project in Android Studio and let Gradle sync. If prompted, install missing components.
+
+### OpenCV (Optional)
+
+The native layer attempts to find OpenCV with `find_package(OpenCV QUIET)`. If not found, it builds a fallback implementation for grayscale and edges. To link OpenCV Android SDK:
+
+- Download OpenCV for Android and unzip
+- Set `OpenCV_DIR` to the CMake directory for your SDK when configuring/syncing the project (e.g. `.../OpenCV-android-sdk/sdk/native/jni`)
+- Re-sync Gradle/CMake; you should see a log line in the CMake output: `OpenCV found: <version>`
+
+### Run
+
+- Connect an Android device (or start an emulator with camera)
+- Click Run ▶ in Android Studio
+- Grant the camera permission when prompted
+- Use the "Toggle Gray/Canny" button to switch modes; watch FPS in the corner
+
+Notes:
+
+- Image flow: CameraX YUV → Kotlin RGBA buffer → JNI → C++ process (OpenCV or fallback) → grayscale bytes → uploaded as RGBA to GL → displayed
+- Minimum target: Android 7.0 (API 24)
+
+## Web Viewer
 
 ```
 cd web
@@ -42,18 +66,25 @@ npm install
 npm run build
 ```
 
-Open `web/public/index.html` directly in a browser, or serve `web/public/` with any static server.
+Open `web/public/index.html` in a browser (or serve `web/public/` with any static server). It shows a static sample processed frame and FPS estimate.
 
-### Android (coming as implementation proceeds)
+## Screenshots / GIFs
 
-High-level plan:
+- Android app running (insert screenshot)
+- Web viewer (insert screenshot)
 
-1. Use `TextureView` and Camera2 to acquire frames
-2. Pass frames to JNI (NV21/RGBA) → process in C++ with OpenCV (Canny/Gray)
-3. Upload processed buffer as GL texture and render with OpenGL ES 2.0
-4. Optional toggle raw/processed and FPS counter
+## Architecture Overview
 
-Setup notes to be expanded with exact Gradle, CMake, and OpenCV SDK integration commands.
+- `CameraProcessor`: CameraX analyzer; converts Y plane → RGBA and calls `NativeBridge.processRgba`
+- `NativeBridge`: Loads `edgeproc` and exposes JNI method
+- C++: `processFrameRGBA` runs Grayscale or Canny (OpenCV if available; otherwise naive fallback). Returns an 8-bit gray buffer
+- `SimpleRenderer`: GL ES renderer; expands grayscale → RGBA on CPU and uploads as a texture; draws full-screen quad
+- `GLView`: Wraps `GLSurfaceView` and exposes `uploadGray`
+- `MainActivity`: Permissions, mode toggle, FPS text, uploads frames to `GLView`
+
+## Commit History
+
+Meaningful, incremental commits: scaffolding, web viewer, Android Gradle setup, JNI/GL/camera wiring.
 
 ## License
 

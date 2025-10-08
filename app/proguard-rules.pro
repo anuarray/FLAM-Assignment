@@ -1,0 +1,2 @@
+-keep class com.example.edgeviewer.** { *; }
+-dontwarn org.opencv.**
